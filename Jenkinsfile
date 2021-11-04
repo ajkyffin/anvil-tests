@@ -1,4 +1,5 @@
 def GCC_version = ['4.8.5', '7']
+def OPENMPI_version = ['1.1.5', '2.1.6']
 
 node {
     stage('Checkout repo') {
@@ -15,6 +16,24 @@ node {
                 gfortran -o fortran fortran.f90
                 ./fortran
             """
+        }
+    }
+    GCC_version.each { GCC_ver ->
+            OPENMPI_version.each { OPENMPI_ver ->
+                stage("OpenMPI ${OPENMPI_ver} - GCC ${GCC_ver}") {
+                    sh """
+                    module load gcc/${ver}
+                    gcc --version | grep " ${ver}"
+                    module load openmpi/${ver}
+                    mpirun --version
+                    cd openmpi
+                    mpicc -o openmpic openmpi.c
+                    ./openmpic
+                    mpicc -o openmpif openmpi.f90
+                    ./openmpif
+                    """
+                }
+            }
         }
     }
     stage('Test openmpi') {
