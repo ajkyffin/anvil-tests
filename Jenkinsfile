@@ -3,9 +3,9 @@ pipeline {
     def GCC_version = ['4.8.5', '7'];
     stages {
         GCC_version.each { ver ->
-                stage("GCC " + ver) {
-                    steps {
-                        sh """
+            stage("GCC " + ver) {
+                steps {
+                    sh """
                         module load gcc/${ver}
                         gcc --version | grep " ${ver}"
                         cd gcc
@@ -13,8 +13,7 @@ pipeline {
                         ./gcc-test
                         gfortran -o fortran fortran.f90
                         ./fortran
-                        """
-                    }
+                    """
                 }
             }
         }
