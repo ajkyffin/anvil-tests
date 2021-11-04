@@ -22,9 +22,9 @@ node {
             OPENMPI_version.each { OPENMPI_ver ->
                 stage("OpenMPI ${OPENMPI_ver} - GCC ${GCC_ver}") {
                     sh """
-                    module load gcc/${ver}
-                    gcc --version | grep " ${ver}"
-                    module load openmpi/${ver}
+                    module load gcc/${GCC_ver}
+                    gcc --version | grep " ${GCC_ver}"
+                    module load openmpi/${OPENMPI_ver}
                     mpirun --version
                     cd openmpi
                     mpicc -o openmpic openmpi.c
