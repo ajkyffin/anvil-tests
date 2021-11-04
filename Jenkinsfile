@@ -1,7 +1,6 @@
 def GCC_version = ['4.8.5', '7']
 
-pipeline {
-    agent any
+node {
     stages {
         GCC_version.each { ver ->
             stage("GCC " + ver) {
