@@ -35,7 +35,6 @@ node {
                 }
             }
         }
-    }
     stage('Test openmpi') {
         echo 'Testing openmpi....'
     }
