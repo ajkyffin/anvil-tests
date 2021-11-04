@@ -1,6 +1,9 @@
 def GCC_version = ['4.8.5', '7']
 
 node {
+    stage('Checkout repo') {
+        git 'https://github.com/ral-facilities/anvil-tests.git'
+    }
     GCC_version.each { ver ->
         stage("GCC " + ver) {
             sh """
