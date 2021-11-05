@@ -27,10 +27,10 @@ node {
                     module load openmpi/${OPENMPI_ver}
                     mpirun --version
                     cd openmpi
-                    mpicc -o openmpic openmpi.c
-                    ./openmpic
-                    mpicc -o openmpif openmpi.f90
-                    ./openmpif
+                    mpicc -o openmpi-c openmpi-c.c
+                    ./openmpi-c
+                    mpicc -o openmpi-f openmpi-f.f90
+                    ./openmpi-f
                     """
                 }
             }
