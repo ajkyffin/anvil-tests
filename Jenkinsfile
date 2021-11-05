@@ -30,7 +30,7 @@ node {
                     mpicc -o openmpi-c openmpi-c.c
                     mpirun ./openmpi-c
                     mpifort -o openmpi-f openmpi-f.f90
-                    ./openmpi-f
+                    mpirun ./openmpi-f
                     """
                 }
             }
