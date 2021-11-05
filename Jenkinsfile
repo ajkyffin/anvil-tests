@@ -3,9 +3,6 @@ def OPENMPI_version = [ '1.1.5', '2.1.6' ]
 def FFTW_version = [ '3.3.10' ]
 
 node {
-    withEnv (
-        ['FFTW_HOME = ./opt/modules-sl7/software/']
-    ){
     stage('Checkout repo') {
         git 'https://github.com/ral-facilities/anvil-tests.git'
     }
@@ -39,30 +36,34 @@ node {
             }
         }
     }
-    GCC_version.each { GCC_ver ->
-        OPENMPI_version.each { OPENMPI_ver ->
-            FFTW_version.each { FFTW_ver ->
-                stage("OpenMPI ${OPENMPI_ver} - GCC ${GCC_ver} - FFTW ${FFTW_ver}") {
-                    sh """
-                    module load gcc/${GCC_ver}
-                    gcc --version | grep " ${GCC_ver}"
-                    module load openmpi/${OPENMPI_ver}
-                    mpirun --version
-                    module load fftw/${FFTW_ver}
-                    cd fftw
+    withEnv (
+        ['FFTW_HOME = ./opt/modules-sl7/software/']
+    ){
+        GCC_version.each { GCC_ver ->
+            OPENMPI_version.each { OPENMPI_ver ->
+                FFTW_version.each { FFTW_ver ->
+                    stage("OpenMPI ${OPENMPI_ver} - GCC ${GCC_ver} - FFTW ${FFTW_ver}") {
+                        sh """
+                        module load gcc/${GCC_ver}
+                        gcc --version | grep " ${GCC_ver}"
+                        module load openmpi/${OPENMPI_ver}
+                        mpirun --version
+                        module load fftw/${FFTW_ver}
+                        cd fftw
 
-                    mpicxx -o fftw-test fftw-test.c -lfftw3_mpi -lfftw3
-                    mpirun ./fftw-test
+                        mpicxx -o fftw-test fftw-test.c -lfftw3_mpi -lfftw3
+                        mpirun ./fftw-test
 
-                    mpicc -o mpi-test mpi-test.c -lfftw3_mpi -lfftw3
-                    mpirun ./mpi-test
+                        mpicc -o mpi-test mpi-test.c -lfftw3_mpi -lfftw3
+                        mpirun ./mpi-test
 
-                    mpif90  -I"${FFTW_HOME}/fftw/${FFTW_ver}-gcc-${GCC_ver}-openmpi-${OPENMPI_ver}/include" -o mpi-fortran-test mpi-fortran-test.f90
-                    mpirun ./mpi-fortran-test
+                        mpif90  -I"${FFTW_HOME}/fftw/${FFTW_ver}-gcc-${GCC_ver}-openmpi-${OPENMPI_ver}/include" -o mpi-fortran-test mpi-fortran-test.f90
+                        mpirun ./mpi-fortran-test
 
-                    mpifort -o fortran-test fortran-test.f90
-                    mpirun ./fortran-test
-                    """
+                        mpifort -o fortran-test fortran-test.f90
+                        mpirun ./fortran-test
+                        """
+                    }
                 }
             }
         }
@@ -76,6 +77,5 @@ node {
     }
     stage('Test fftw with openmpi') {
         echo 'Testing fftw with openmpi....'
-    }
     }
 }
