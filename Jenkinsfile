@@ -28,8 +28,8 @@ node {
                     mpirun --version
                     cd openmpi
                     mpicc -o openmpi-c openmpi-c.c
-                    ./openmpi-c
-                    mpicc -o openmpi-f openmpi-f.f90
+                    mpirun ./openmpi-c
+                    mpifort -o openmpi-f openmpi-f.f90
                     ./openmpi-f
                     """
                 }
