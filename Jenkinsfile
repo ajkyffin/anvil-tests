@@ -26,6 +26,7 @@ node {
                     gcc --version | grep " ${GCC_ver}"
                     module load openmpi/${OPENMPI_ver}
                     mpirun --version
+                    cd ..
                     cd openmpi
                     mpicc -o openmpic openmpi.c
                     ./openmpic
