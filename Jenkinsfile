@@ -37,7 +37,7 @@ node {
         }
     }
     withEnv (
-        ['FFTW_HOME = ./opt/modules-sl7/software/']
+        ["FFTW_HOME=./opt/modules-sl7/software/"]
     ){
         GCC_version.each { GCC_ver ->
             OPENMPI_version.each { OPENMPI_ver ->
