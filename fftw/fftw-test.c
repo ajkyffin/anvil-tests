@@ -2,7 +2,7 @@
 
 #define N 100
 
-void main() {
+int main() {
     fftw_complex *in, *out;
     fftw_plan p;
 
