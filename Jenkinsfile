@@ -29,7 +29,7 @@ node {
                     cd openmpi
                     mpicc -o openmpi-c openmpi-c.c
                     mpirun ./openmpi-c
-                    mpiifort -o openmpi-f openmpi-f.f90
+                    mpif90 -o openmpi-f openmpi-f.f90
                     mpirun ./openmpi-f
                     """
                 }
