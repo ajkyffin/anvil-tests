@@ -4,7 +4,7 @@ def FFTW_version = [ '3.3.10' ]
 
 node {
     environment {
-        FFTW_HOME = "./opt/modules-sl7/software/fftw/${FFTW_version}-gcc-${GCC_version}-openmpi-${OPENMPI_version}"
+        FFTW_HOME = "./opt/modules-sl7/software/fftw/${FFTW_ver}-gcc-${GCC_ver}-openmpi-${OPENMPI_ver}"
     }
     stage('Checkout repo') {
         git 'https://github.com/ral-facilities/anvil-tests.git'
@@ -57,7 +57,7 @@ node {
                     mpicc -o mpi-test mpi-test.c -lfftw3_mpi -lfftw3
                     mpirun ./mpi-test
 
-                    mpif90  -I"${env.FFTW_HOME}/include" -o mpi-fortran-test mpi-fortran-test.f90
+                    mpif90  -I"${FFTW_HOME}/include" -o mpi-fortran-test mpi-fortran-test.f90
                     mpirun ./mpi-fortran-test
 
                     mpifort -o fortran-test fortran-test.f90
