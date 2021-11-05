@@ -51,7 +51,7 @@ node {
                     mpicxx -o fftw-test fftw-test.c -lfftw3_mpi -lfftw3
                     mpirun ./fftw-test
 
-                    mpicc -o mpi-test mpi-test.c
+                    mpicc -o mpi-test mpi-test.c -lfftw3_mpi -lfftw3
                     mpirun ./mpi-test
 
                     mpif90 -o mpi-fortran-test mpi-fortran-test.f90
