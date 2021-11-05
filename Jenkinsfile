@@ -18,6 +18,9 @@ node {
             """
         }
     }
+    stage('Checkout repo') {
+        git 'https://github.com/ral-facilities/anvil-tests.git'
+    }
     GCC_version.each { GCC_ver ->
             OPENMPI_version.each { OPENMPI_ver ->
                 stage("OpenMPI ${OPENMPI_ver} - GCC ${GCC_ver}") {
@@ -26,7 +29,6 @@ node {
                     gcc --version | grep " ${GCC_ver}"
                     module load openmpi/${OPENMPI_ver}
                     mpirun --version
-                    cd ..
                     cd openmpi
                     mpicc -o openmpic openmpi.c
                     ./openmpic
