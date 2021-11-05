@@ -3,9 +3,9 @@ def OPENMPI_version = [ '1.1.5', '2.1.6' ]
 def FFTW_version = [ '3.3.10' ]
 
 node {
-    environment {
-        FFTW_HOME = './opt/modules-sl7/software/fftw/${FFTW_ver}-gcc-${GCC_ver}-openmpi-${OPENMPI_ver}'
-    }
+    withEnv (
+        ['FFTW_HOME = ./opt/modules-sl7/software/fftw/${FFTW_ver}-gcc-${GCC_ver}-openmpi-${OPENMPI_ver}']
+    ){
     stage('Checkout repo') {
         git 'https://github.com/ral-facilities/anvil-tests.git'
     }
@@ -76,5 +76,6 @@ node {
     }
     stage('Test fftw with openmpi') {
         echo 'Testing fftw with openmpi....'
+    }
     }
 }
