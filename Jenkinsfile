@@ -1,5 +1,6 @@
-def GCC_version = ['4.8.5', '7']
-def OPENMPI_version = ['1.1.5', '2.1.6']
+def GCC_version = [ '4.8.5', '7' ]
+def OPENMPI_version = [ '1.1.5', '2.1.6' ]
+def FFTW_version = [ '3.3.10' ]
 
 node {
     stage('Checkout repo') {
@@ -19,22 +20,51 @@ node {
         }
     }
     GCC_version.each { GCC_ver ->
-            OPENMPI_version.each { OPENMPI_ver ->
+        OPENMPI_version.each { OPENMPI_ver ->
+            stage("OpenMPI ${OPENMPI_ver} - GCC ${GCC_ver}") {
+                sh """
+                module load gcc/${GCC_ver}
+                gcc --version | grep " ${GCC_ver}"
+                module load openmpi/${OPENMPI_ver}
+                mpirun --version
+                cd openmpi
+                mpicc -o openmpi-c openmpi-c.c
+                mpirun ./openmpi-c
+                mpif90 -o openmpi-f openmpi-f.f90
+                mpirun ./openmpi-f
+                """
+            }
+        }
+    }
+    GCC_version.each { GCC_ver ->
+        OPENMPI_version.each { OPENMPI_ver ->
+            FFTW_version.each { FFTW_ver ->
                 stage("OpenMPI ${OPENMPI_ver} - GCC ${GCC_ver}") {
                     sh """
                     module load gcc/${GCC_ver}
                     gcc --version | grep " ${GCC_ver}"
                     module load openmpi/${OPENMPI_ver}
                     mpirun --version
-                    cd openmpi
-                    mpicc -o openmpi-c openmpi-c.c
-                    mpirun ./openmpi-c
-                    mpif90 -o openmpi-f openmpi-f.f90
-                    mpirun ./openmpi-f
+                    module load fftw/${FFTW_ver}
+                    cd fftw
+
+                    mpicxx -o fftw-test fftw-test.c -lfftw3_mpi -lfftw3
+                    mpirun ./fftw-test
+
+                    mpicc -o mpi-test mpi-test.c
+                    mpirun ./mpi-test
+
+                    mpif90 -o mpi-fortran-test mpi-fortran-test.f90
+                    mpirun ./mpi-fortran-test
+
+                    mpifort -o fortran-test fortran-test.f90
+                    mpirun ./fortran-test
                     """
                 }
             }
         }
+    }
+
     stage('Test openmpi') {
         echo 'Testing openmpi....'
     }
