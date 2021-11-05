@@ -57,7 +57,7 @@ node {
                     mpicc -o mpi-test mpi-test.c -lfftw3_mpi -lfftw3
                     mpirun ./mpi-test
 
-                    mpif90  -I"FFTW_HOME/include" -o mpi-fortran-test mpi-fortran-test.f90
+                    mpif90  -I"env.FFTW_HOME/include" -o mpi-fortran-test mpi-fortran-test.f90
                     mpirun ./mpi-fortran-test
 
                     mpifort -o fortran-test fortran-test.f90
