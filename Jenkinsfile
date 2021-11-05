@@ -37,7 +37,7 @@ node {
         }
     }
     withEnv (
-        ['FFTW_HOME = ./opt/modules-sl7/software/']
+        ["FFTW_HOME = ./opt/modules-sl7/software/"]
     ){
         GCC_version.each { GCC_ver ->
             OPENMPI_version.each { OPENMPI_ver ->
@@ -57,7 +57,7 @@ node {
                         mpicc -o mpi-test mpi-test.c -lfftw3_mpi -lfftw3
                         mpirun ./mpi-test
 
-                        mpif90  -I"${FFTW_HOME}/fftw/${FFTW_ver}-gcc-${GCC_ver}-openmpi-${OPENMPI_ver}/include" -o mpi-fortran-test mpi-fortran-test.f90
+                        mpif90  -I"${env.FFTW_HOME}/fftw/${FFTW_ver}-gcc-${GCC_ver}-openmpi-${OPENMPI_ver}/include" -o mpi-fortran-test mpi-fortran-test.f90
                         mpirun ./mpi-fortran-test
 
                         mpifort -o fortran-test fortran-test.f90
