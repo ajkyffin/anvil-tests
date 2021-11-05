@@ -39,7 +39,7 @@ node {
     GCC_version.each { GCC_ver ->
         OPENMPI_version.each { OPENMPI_ver ->
             FFTW_version.each { FFTW_ver ->
-                stage("OpenMPI ${OPENMPI_ver} - GCC ${GCC_ver}") {
+                stage("OpenMPI ${OPENMPI_ver} - GCC ${GCC_ver} - FFTW ${FFTW_ver}") {
                     sh """
                     module load gcc/${GCC_ver}
                     gcc --version | grep " ${GCC_ver}"

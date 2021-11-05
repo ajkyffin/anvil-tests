@@ -14,4 +14,6 @@ void main() {
     
     fftw_destroy_plan(p);
     fftw_free(in); fftw_free(out);
+
+    return 0;
 }
