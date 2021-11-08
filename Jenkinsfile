@@ -1,5 +1,5 @@
 def GCC_version = [ '4.8.5', '7' ]
-def OPENMPI_version = [ '1.1.10', '2.1.6' ]
+def OPENMPI_version = [ '1.10.0', '2.1.6' ]
 def FFTW_version = [ '3.3.10' ]
 
 node {
