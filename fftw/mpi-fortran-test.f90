@@ -2,8 +2,8 @@ program test
 
 use, intrinsic :: iso_c_binding
   include 'fftw3-mpi.f03'
-  integer(C_INTPTR_T), parameter :: L = 100
-  integer(C_INTPTR_T), parameter :: M = 100
+  integer(C_INTPTR_T), parameter :: L = 50
+  integer(C_INTPTR_T), parameter :: M = 50
   type(C_PTR) :: plan, cdata
   complex(C_DOUBLE_COMPLEX), pointer :: data(:,:)
   integer(C_INTPTR_T) :: i, j, alloc_local, local_M, local_j_offset
