@@ -68,14 +68,4 @@ node {
             }
         }
     }
-
-    stage('Test openmpi') {
-        echo 'Testing openmpi....'
-    }
-    stage('Test fftw') {
-        echo 'Testing fftw..'
-    }
-    stage('Test fftw with openmpi') {
-        echo 'Testing fftw with openmpi....'
-    }
 }
