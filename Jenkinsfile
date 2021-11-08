@@ -51,7 +51,7 @@ node {
                         module load fftw/${FFTW_ver}
                         cd fftw
 
-                        mpicxx -o fftw-test fftw-test.c -lfftw3_mpi -lfftw3 -lfftw3f -lfftw3l
+                        mpicxx -o fftw-test fftw-test.c -lfftw3_mpi -lfftw3
                         mpirun ./fftw-test
 
                         mpicc -o mpi-test mpi-test.c -lfftw3_mpi -lfftw3
