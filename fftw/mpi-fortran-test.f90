@@ -1,6 +1,7 @@
 program test
 
 use, intrinsic :: iso_c_binding
+  use mpi
   include 'fftw3-mpi.f03'
   integer(C_INTPTR_T), parameter :: L = 50
   integer(C_INTPTR_T), parameter :: M = 50
