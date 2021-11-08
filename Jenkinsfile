@@ -60,7 +60,7 @@ node {
                         mpif90  -I"$FFTW_HOME/fftw/${FFTW_ver}-gcc-${GCC_ver}-openmpi-${OPENMPI_ver}/include" -o mpi-fortran-test mpi-fortran-test.f90 -lfftw3_mpi -lfftw3 -lm
                         mpirun ./mpi-fortran-test
 
-                        mpifort -o fortran-test fortran-test.f90 -lfftw3_mpi -lfftw3
+                        mpifort -o fortran-test fortran-test.f90 -lfftw3
                         mpirun ./fortran-test
                         """
                     }
