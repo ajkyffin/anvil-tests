@@ -1,6 +1,7 @@
 def GCC_version = [ '4.8.5', '7' ]
 def OPENMPI_version = [ '1.10.0', '2.1.6' ]
 def FFTW_version = [ '3.3.10' ]
+def OpenBLAS_version = [ '0.3.17' ]
 
 node {
     stage('Checkout repo') {
@@ -68,7 +69,7 @@ node {
             }
         }
     }
-    stage("GCC " + GCC_version[0]) {
+    stage("OpenBLAS " + OpenBLAS_version) {
             sh """
                 module load "gcc/${GCC_version[0]}"
                 gcc --version | grep " ${GCC_version[0]}"
