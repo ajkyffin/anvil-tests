@@ -68,4 +68,16 @@ node {
             }
         }
     }
+    stage("GCC " + GCC_version[0]) {
+            sh """
+                module load "gcc/${GCC_version[0]}"
+                gcc --version | grep " ${GCC_version[0]}"
+                cd openblas
+                source /opt/modules-common/lmod/lmod/init/profile
+                export MODULEPATH=/opt/modules-sl7/modulefiles/Core
+                module load openblas
+                gcc -lgfortran -lopenblas -o openblas-test openblas-test.c
+                ./openblas-test
+            """
+        }
 }
