@@ -97,5 +97,6 @@ node {
                     mpifort -o scalapack-test scalapack-test.f -lscalapack -lopenblas 
                     mpirun -np 6 ./scalapack-test
             """
-
+        }
+    }
 }
