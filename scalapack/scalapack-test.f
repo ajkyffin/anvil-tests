@@ -4,13 +4,13 @@
 !     *
 !     *     .. Parameters ..
           INTEGER            DLEN_, IA, JA, IB, JB, M, N, MB, NB, RSRC,
-         $                   CSRC, MXLLDA, MXLLDB, NRHS, NBRHS, NOUT,
-         $                   MXLOCR, MXLOCC, MXRHSC
+                             CSRC, MXLLDA, MXLLDB, NRHS, NBRHS, NOUT,
+                             MXLOCR, MXLOCC, MXRHSC
           PARAMETER          ( DLEN_ = 9, IA = 1, JA = 1, IB = 1, JB = 1,
-         $                   M = 9, N = 9, MB = 2, NB = 2, RSRC = 0,
-         $                   CSRC = 0, MXLLDA = 5, MXLLDB = 5, NRHS = 1,
-         $                   NBRHS = 1, NOUT = 6, MXLOCR = 5, MXLOCC = 4,
-         $                   MXRHSC = 1 )
+                             M = 9, N = 9, MB = 2, NB = 2, RSRC = 0,
+                             CSRC = 0, MXLLDA = 5, MXLLDB = 5, NRHS = 1,
+                             NBRHS = 1, NOUT = 6, MXLOCR = 5, MXLOCC = 4,
+                             MXRHSC = 1 )
           DOUBLE PRECISION   ONE
           PARAMETER          ( ONE = 1.0D+0 )
 !     *     ..
@@ -20,10 +20,10 @@
 !     *     ..
 !     *     .. Local Arrays ..
           INTEGER            DESCA( DLEN_ ), DESCB( DLEN_ ),
-         $                   IPIV( MXLOCR+NB )
+                             IPIV( MXLOCR+NB )
           DOUBLE PRECISION   A( MXLLDA, MXLOCC ), A0( MXLLDA, MXLOCC ),
-         $                   B( MXLLDB, MXRHSC ), B0( MXLLDB, MXRHSC ),
-         $                   WORK( MXLOCR )
+                             B( MXLLDB, MXRHSC ), B0( MXLLDB, MXRHSC ),
+                             WORK( MXLOCR )
 !     *     ..
 !     *     .. External Functions ..
           DOUBLE PRECISION   PDLAMCH, PDLANGE
@@ -31,8 +31,8 @@
 !     *     ..
 !     *     .. External Subroutines ..
           EXTERNAL           BLACS_EXIT, BLACS_GRIDEXIT, BLACS_GRIDINFO,
-         $                   DESCINIT, MATINIT, PDGEMM, PDGESV, PDLACPY,
-         $                   SL_INIT
+                             DESCINIT, MATINIT, PDGEMM, PDGESV, PDLACPY,
+                             SL_INIT
 !     *     ..
 !     *     .. Intrinsic Functions ..
           INTRINSIC          DBLE
@@ -50,15 +50,15 @@
 !     *     If I'm not in the process grid, go to the end of the program
 !     *
           IF( MYROW.EQ.-1 )
-         $   GO TO 10
+             GO TO 10
 !     *
 !     *     DISTRIBUTE THE MATRIX ON THE PROCESS GRID
 !     *     Initialize the array descriptors for the matrices A and B
 !     *
           CALL DESCINIT( DESCA, M, N, MB, NB, RSRC, CSRC, ICTXT, MXLLDA,
-         $               INFO )
+                         INFO )
           CALL DESCINIT( DESCB, N, NRHS, NB, NBRHS, RSRC, CSRC, ICTXT,
-         $               MXLLDB, INFO )
+                         MXLLDB, INFO )
 !     *
 !     *     Generate matrices A and B and distribute to the process grid
 !     *
@@ -73,7 +73,7 @@
 !     *     Solve the linear system A * X = B
 !     *
           CALL PDGESV( N, NRHS, A, IA, JA, DESCA, IPIV, B, IB, JB, DESCB,
-         $             INFO )
+                       INFO )
 !     *
           IF( MYROW.EQ.0 .AND. MYCOL.EQ.0 ) THEN
              WRITE( NOUT, FMT = 9999 )
@@ -88,7 +88,7 @@
           ANORM = PDLANGE( 'I', N, N, A, 1, 1, DESCA, WORK )
           BNORM = PDLANGE( 'I', N, NRHS, B, 1, 1, DESCB, WORK )
           CALL PDGEMM( 'N', 'N', N, NRHS, N, ONE, A0, 1, 1, DESCA, B, 1, 1,
-         $             DESCB, -ONE, B0, 1, 1, DESCB )
+                       DESCB, -ONE, B0, 1, 1, DESCB )
           XNORM = PDLANGE( 'I', N, NRHS, B0, 1, 1, DESCB, WORK )
           RESID = XNORM / ( ANORM*BNORM*EPS*DBLE( N ) )
 !     *
@@ -114,16 +114,16 @@
 !     *
      9999 FORMAT( / 'ScaLAPACK Example Program #1 -- May 1, 1997' )
      9998 FORMAT( / 'Solving Ax=b where A is a ', I3, ' by ', I3,
-         $      ' matrix with a block size of ', I3 )
+                ' matrix with a block size of ', I3 )
      9997 FORMAT( 'Running on ', I3, ' processes, where the process grid',
-         $      ' is ', I3, ' by ', I3 )
+                ' is ', I3, ' by ', I3 )
      9996 FORMAT( / 'INFO code returned by PDGESV = ', I3 )
      9995 FORMAT( /
-         $   'According to the normalized residual the solution is correct.'
-         $       )
+             'According to the normalized residual the solution is correct.'
+                 )
      9994 FORMAT( /
-         $ 'According to the normalized residual the solution is incorrect.'
-         $       )
+           'According to the normalized residual the solution is incorrect.'
+                )
      9993 FORMAT( / '||A*x - b|| / ( ||x||*||A||*eps*N ) = ', 1P, E16.8 )
           STOP
           END
@@ -296,7 +296,7 @@
 !     *     ..
 !     *     .. External Subroutines ..
           EXTERNAL           BLACS_GET, BLACS_GRIDINIT, BLACS_PINFO,
-         $                   BLACS_SETUP
+                             BLACS_SETUP
 !     *     ..
 !     *     .. Executable Statements ..
 !     *
@@ -308,7 +308,7 @@
 !     *
           IF( NPROCS.LT.1 ) THEN
              IF( IAM.EQ.0 )
-         $      NPROCS = NPROW*NPCOL
+                NPROCS = NPROW*NPCOL
              CALL BLACS_SETUP( IAM, NPROCS )
           END IF
 !     *
