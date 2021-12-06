@@ -2,6 +2,7 @@ def GCC_version = [ '4.8.5', '7' ]
 def OPENMPI_version = [ '1.10.0', '2.1.6' ]
 def FFTW_version = [ '3.3.10' ]
 def OpenBLAS_version = [ '0.3.17' ]
+def ScaLAPACK_version = [ '2.1.0' ]
 
 node {
     stage('Checkout repo') {
@@ -81,4 +82,20 @@ node {
                 ./openblas-test
             """
         }
+    OPENMPI_version.each { OPENMPI_ver ->
+    stage("ScaLAPACK " + ScaLAPACK_version) {
+            sh """
+                    module load "gcc/${GCC_version[0]}"
+                    gcc --version | grep " ${GCC_version[0]}"
+                    module load openmpi/${OPENMPI_ver}
+                    mpirun --version
+                    source /opt/modules-common/lmod/lmod/init/profile
+                    export MODULEPATH=/opt/modules-sl7/modulefiles/Core
+                    module load openblas
+                    cd scalapack
+                    module load scalapack/${ScaLAPACK_version}
+                    mpifort -o scalapack-test scalapack-test.f -lscalapack -lopenblas 
+                    mpirun -np 6 ./scalapack-test
+            """
+
 }
