@@ -89,8 +89,6 @@ node {
                     gcc --version | grep " ${GCC_version[0]}"
                     module load openmpi/${OPENMPI_ver}
                     mpirun --version
-                    source /opt/modules-common/lmod/lmod/init/profile
-                    export MODULEPATH=/opt/modules-sl7/modulefiles/Core
                     module load openblas
                     module load scalapack/${ScaLAPACK_version[0]}
                     cd scalapack
