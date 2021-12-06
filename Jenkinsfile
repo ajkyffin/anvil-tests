@@ -92,7 +92,7 @@ node {
                     source /opt/modules-common/lmod/lmod/init/profile
                     export MODULEPATH=/opt/modules-sl7/modulefiles/Core
                     module load openblas
-                    module load scalapack/${ScaLAPACK_version}-gcc-${GCC_version[0]}
+                    module load scalapack/${ScaLAPACK_version[0]}-gcc-${GCC_version[0]}
                     cd scalapack
                     mpifort -o scalapack-test scalapack-test.f -lscalapack -lopenblas 
                     mpirun -np 6 ./scalapack-test
