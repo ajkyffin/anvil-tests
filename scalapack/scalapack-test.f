@@ -3,13 +3,13 @@
 !     *     Example Program solving Ax=b via ScaLAPACK routine PDGESV
 !     *
 !     *     .. Parameters ..
-          INTEGER            DLEN_, IA, JA, IB, JB, M, N, MB, NB, RSRC,
-                             CSRC, MXLLDA, MXLLDB, NRHS, NBRHS, NOUT,
-                             MXLOCR, MXLOCC, MXRHSC
-          PARAMETER          ( DLEN_ = 9, IA = 1, JA = 1, IB = 1, JB = 1,
-                             M = 9, N = 9, MB = 2, NB = 2, RSRC = 0,
-                             CSRC = 0, MXLLDA = 5, MXLLDB = 5, NRHS = 1,
-                             NBRHS = 1, NOUT = 6, MXLOCR = 5, MXLOCC = 4,
+          INTEGER            DLEN_, IA, JA, IB, JB, M, N, MB, NB, RSRC, &
+                             CSRC, MXLLDA, MXLLDB, NRHS, NBRHS, NOUT, &
+                             MXLOCR, MXLOCC, MXRHSC 
+          PARAMETER          ( DLEN_ = 9, IA = 1, JA = 1, IB = 1, JB = 1,&
+                             M = 9, N = 9, MB = 2, NB = 2, RSRC = 0, &
+                             CSRC = 0, MXLLDA = 5, MXLLDB = 5, NRHS = 1, &
+                             NBRHS = 1, NOUT = 6, MXLOCR = 5, MXLOCC = 4, &
                              MXRHSC = 1 )
           DOUBLE PRECISION   ONE
           PARAMETER          ( ONE = 1.0D+0 )
