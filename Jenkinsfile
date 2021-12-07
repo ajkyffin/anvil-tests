@@ -92,7 +92,7 @@ node {
                     module load openblas
                     module load scalapack/${ScaLAPACK_version[0]}
                     cd scalapack
-                    mpifort -o scalapack-test scalapack-test.f -lscalapack -lopenblas 
+                    mpifort -o scalapack-test scalapack-test.f -ffixed-form -lscalapack -lopenblas 
                     mpirun -np 6 ./scalapack-test
             """
         }
