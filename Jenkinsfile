@@ -29,19 +29,16 @@ node (params.os_label) {
         gcc_versions[os_label].each { gcc_ver ->
             catchError(stageResult: "FAILURE") {
                 sh label: "GCC ${gcc_ver}", script: """
-                    cd gcc
                     module load gcc/${gcc_ver}
 
-                    gcc --version | head -n1 | grep 'gcc (.\\+) ${gcc_ver}\\.'
-                    g++ --version | head -n1 | grep 'g++ (.\\+) ${gcc_ver}\\.'
-                    cpp --version | head -n1 | grep 'cpp (.\\+) ${gcc_ver}\\.'
-                    gfortran --version | head -n1 | grep 'GNU Fortran (.\\+) ${gcc_ver}\\.'
+                    \$CC --version | head -n1 | grep 'gcc (.\\+) ${gcc_ver}\\.'
+                    \$CXX --version | head -n1 | grep 'g++ (.\\+) ${gcc_ver}\\.'
+                    \$FC --version | head -n1 | grep 'GNU Fortran (.\\+) ${gcc_ver}\\.'
 
-                    gcc -o gcc-test gcc-test.c
-                    ./gcc-test
-
-                    gfortran -o fortran fortran.f90
-                    ./fortran
+                    cd hello-world
+                    make clean
+                    make
+                    make test
                 """
             }
         }
@@ -50,15 +47,31 @@ node (params.os_label) {
     stage("Intel Compilers") {
         catchError(stageResult: "FAILURE") {
             sh """
-                module load intel_base
+                module load intel
 
-                icc --version
-                icpc --version
-                ifort --version
+                \$CC --version | head -n1 | grep '^icc'
+                \$CXX --version | head -n1 | grep '^icpc'
+                \$FC --version | head -n1 | grep '^ifort'
 
-                icx --version
-                icpx --version
-                ifx --version
+                cd hello-world
+                make clean
+                make
+                make test
+            """
+        }
+
+        catchError(stageResult: "FAILURE") {
+            sh """
+                module load intelx
+
+                \$CC --version | head -n1 | grep 'oneAPI DPC++/C++'
+                \$CXX --version | head -n1 | grep 'oneAPI DPC++/C++'
+                \$FC --version | head -n1 | grep '^ifx'
+
+                cd hello-world
+                make clean
+                make
+                make test
             """
         }
     }
