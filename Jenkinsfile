@@ -89,6 +89,11 @@ node (params.os_label) {
                 mpiicc --version | head -n1 | grep '^icc'
                 mpiicpc --version | head -n1 | grep '^icpc'
                 mpiifort --version | head -n1 | grep '^ifort'
+
+                cd mpi-hello-world
+                make clean
+                make
+                make test
             """
         }
 
@@ -104,6 +109,11 @@ node (params.os_label) {
                 mpiicc --version | head -n1 | grep 'oneAPI DPC++/C++'
                 mpiicxx --version | head -n1 | grep 'oneAPI DPC++/C++'
                 mpiifort --version | head -n1 | grep '^ifx'
+
+                cd mpi-hello-world
+                make clean
+                make
+                make test
             """
         }
     }
@@ -138,18 +148,17 @@ node (params.os_label) {
         }
     }
 
-    stage("OpenMPI ${openmpi_versions} - GCC") {
+    stage("OpenMPI ${openmpi_versions}") {
         openmpi_versions.each { mpi_ver ->
             gcc_versions[os_label].each { gcc_ver ->
                 catchError(stageResult: "FAILURE") {
                     sh label: "OpenMPI ${mpi_ver} - GCC ${gcc_ver}", script: """
                         module load gcc/${gcc_ver} openmpi/${mpi_ver}
-                        mpirun --version
-                        cd openmpi
-                        mpicc -o openmpi-c openmpi-c.c
-                        mpirun ./openmpi-c
-                        mpif90 -o openmpi-f openmpi-f.f90
-                        mpirun ./openmpi-f
+
+                        cd mpi-hello-world
+                        make clean
+                        make
+                        make test
                     """
                 }
             }
@@ -157,12 +166,11 @@ node (params.os_label) {
             catchError(stageResult: "FAILURE") {
                 sh label: "OpenMPI ${mpi_ver} - Intel", script: """
                     module load intel openmpi/${mpi_ver}
-                    mpirun --version
-                    cd openmpi
-                    mpicc -o openmpi-c openmpi-c.c
-                    mpirun ./openmpi-c
-                    mpif90 -o openmpi-f openmpi-f.f90
-                    mpirun ./openmpi-f
+
+                    cd mpi-hello-world
+                    make clean
+                    make
+                    make test
                 """
             }
         }
