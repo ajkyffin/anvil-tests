@@ -176,26 +176,18 @@ node (params.os_label) {
         }
     }
 
-    stage("FFTW ${fftw_versions} - OpenMPI - GCC") {
+    stage("FFTW ${fftw_versions}") {
         fftw_versions.each { fftw_ver ->
             openmpi_versions.each { mpi_ver ->
                 gcc_versions[os_label].each { gcc_ver ->
                     catchError(stageResult: "FAILURE") {
                         sh label: "FFTW ${fftw_ver} - OpenMPI ${mpi_ver} - GCC ${gcc_ver}", script: """
                             module load gcc/${gcc_ver} openmpi/${mpi_ver} fftw/${fftw_ver}
+
                             cd fftw
-
-                            mpicxx -o fftw-test fftw-test.c -lfftw3_mpi -lfftw3
-                            mpirun ./fftw-test
-
-                            mpicc -o mpi-test mpi-test.c -lfftw3_mpi -lfftw3 -lm
-                            mpirun ./mpi-test
-
-                            mpif90  -I"\$FFTW_HOME/include" -o mpi-fortran-test mpi-fortran-test.f90 -lfftw3_mpi -lfftw3 -lm
-                            mpirun ./mpi-fortran-test
-
-                            gfortran -I"\$FFTW_HOME/include" -o fortran-test fortran-test.f90 -lfftw3
-                            ./fortran-test
+                            make clean
+                            make
+                            make test
                         """
                     }
                 }
@@ -203,19 +195,11 @@ node (params.os_label) {
                 catchError(stageResult: "FAILURE") {
                     sh label: "FFTW ${fftw_ver} - OpenMPI ${mpi_ver} - Intel", script: """
                         module load intel openmpi/${mpi_ver} fftw/${fftw_ver}
+
                         cd fftw
-
-                        mpicxx -o fftw-test fftw-test.c -lfftw3_mpi -lfftw3
-                        mpirun ./fftw-test
-
-                        mpicc -o mpi-test mpi-test.c -lfftw3_mpi -lfftw3 -lm
-                        mpirun ./mpi-test
-
-                        mpif90  -I"\$FFTW_HOME/include" -o mpi-fortran-test mpi-fortran-test.f90 -lfftw3_mpi -lfftw3 -lm
-                        mpirun ./mpi-fortran-test
-
-                        ifort -I"\$FFTW_HOME/include" -o fortran-test fortran-test.f90 -lfftw3
-                        ./fortran-test
+                        make clean
+                        make
+                        make test
                     """
                 }
             }
@@ -223,19 +207,11 @@ node (params.os_label) {
             catchError(stageResult: "FAILURE") {
                 sh label: "FFTW ${fftw_ver} - IntelMPI", script: """
                     module load intel intelmpi fftw/${fftw_ver}
+
                     cd fftw
-
-                    mpicxx -o fftw-test fftw-test.c -lfftw3_mpi -lfftw3
-                    mpirun ./fftw-test
-
-                    mpicc -o mpi-test mpi-test.c -lfftw3_mpi -lfftw3 -lm
-                    mpirun ./mpi-test
-
-                    mpif90  -I"\$FFTW_HOME/include" -o mpi-fortran-test mpi-fortran-test.f90 -lfftw3_mpi -lfftw3 -lm
-                    mpirun ./mpi-fortran-test
-
-                    ifort -I"\$FFTW_HOME/include" -o fortran-test fortran-test.f90 -lfftw3
-                    ./fortran-test
+                    make clean
+                    make
+                    make test
                 """
             }
         }
@@ -243,12 +219,27 @@ node (params.os_label) {
 
     stage("OpenBLAS ${openblas_versions}") {
         openblas_versions.each { openblas_ver ->
+            gcc_versions[os_label].each { gcc_ver ->
+                catchError(stageResult: "FAILURE") {
+                    sh label: "OpenBLAS ${openblas_ver} - GCC ${gcc_ver}", script: """
+                        module load gcc/${gcc_ver} openblas/${openblas_ver}
+
+                        cd openblas
+                        make clean
+                        make
+                        make test
+                    """
+                }
+            }
+
             catchError(stageResult: "FAILURE") {
-                sh label: "OpenBLAS ${openblas_ver}", script: """
-                    module load openblas/${openblas_ver}
+                sh label: "OpenBLAS ${openblas_ver} - Intel", script: """
+                    module load intel openblas/${openblas_ver}
+
                     cd openblas
-                    gcc -lgfortran -lopenblas -o openblas-test openblas-test.c
-                    ./openblas-test
+                    make clean
+                    make
+                    make test
                 """
             }
         }
@@ -261,11 +252,25 @@ node (params.os_label) {
                     catchError(stageResult: "FAILURE") {
                         sh label: "ScaLAPACK ${scalapack_ver} - OpenMPI ${mpi_ver} - GCC ${gcc_ver}", script: """
                             module load gcc/${gcc_ver} openmpi/${mpi_ver} scalapack/${scalapack_ver}
+
                             cd scalapack
-                            mpifort -o scalapack-test scalapack-test.f -lscalapack -lopenblas
-                            mpirun -np 6 --oversubscribe ./scalapack-test
+                            make clean
+                            make
+                            make test
                         """
                     }
+                }
+
+                catchError(stageResult: "FAILURE") {
+                    sh label: "ScaLAPACK ${scalapack_ver} - OpenMPI ${mpi_ver} - Intel", script: """
+                        module load intel openmpi/${mpi_ver} scalapack/${scalapack_ver}
+                        module load openblas # easier than getting the test to use mkl
+
+                        cd scalapack
+                        make clean
+                        make
+                        make test
+                    """
                 }
             }
         }
