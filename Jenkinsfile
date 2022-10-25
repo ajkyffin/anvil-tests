@@ -250,8 +250,8 @@ node (params.os_label) {
             openmpi_versions.each { mpi_ver ->
                 gcc_versions[os_label].each { gcc_ver ->
                     catchError(stageResult: "FAILURE") {
-                        sh label: "ScaLAPACK ${scalapack_ver} - OpenMPI ${mpi_ver} - GCC ${gcc_ver}", script: """
-                            module load gcc/${gcc_ver} openmpi/${mpi_ver} scalapack/${scalapack_ver}
+                        sh label: "ScaLAPACK ${scalapack_ver} - OpenMPI ${mpi_ver} - GCC ${gcc_ver} - OpenBLAS", script: """
+                            module load gcc/${gcc_ver} openmpi/${mpi_ver} scalapack/${scalapack_ver} openblas
 
                             cd scalapack
                             make clean
@@ -262,9 +262,8 @@ node (params.os_label) {
                 }
 
                 catchError(stageResult: "FAILURE") {
-                    sh label: "ScaLAPACK ${scalapack_ver} - OpenMPI ${mpi_ver} - Intel", script: """
-                        module load intel openmpi/${mpi_ver} scalapack/${scalapack_ver}
-                        module load openblas # easier than getting the test to use mkl
+                    sh label: "ScaLAPACK ${scalapack_ver} - OpenMPI ${mpi_ver} - Intel - OpenBLAS", script: """
+                        module load intel openmpi/${mpi_ver} scalapack/${scalapack_ver} openblas
 
                         cd scalapack
                         make clean
@@ -272,6 +271,39 @@ node (params.os_label) {
                         make test
                     """
                 }
+
+                catchError(stageResult: "FAILURE") {
+                    sh label: "ScaLAPACK ${scalapack_ver} - OpenMPI ${mpi_ver} - Intel - MKL", script: """
+                        module load intel openmpi/${mpi_ver} scalapack/${scalapack_ver}
+
+                        cd scalapack
+                        make clean
+                        make mkl
+                        make test
+                    """
+                }
+            }
+
+            catchError(stageResult: "FAILURE") {
+                sh label: "ScaLAPACK ${scalapack_ver} - IntelMPI - OpenBLAS", script: """
+                    module load intel intelmpi scalapack/${scalapack_ver} openblas
+
+                    cd scalapack
+                    make clean
+                    make
+                    make test
+                """
+            }
+
+            catchError(stageResult: "FAILURE") {
+                sh label: "ScaLAPACK ${scalapack_ver} - IntelMPI - MKL", script: """
+                    module load intel intelmpi scalapack/${scalapack_ver}
+
+                    cd scalapack
+                    make clean
+                    make mkl
+                    make test
+                """
             }
         }
     }

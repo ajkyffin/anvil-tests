@@ -3,6 +3,9 @@ OVERSUBSCRIBE := $(shell mpirun --version | grep -q "Open MPI" && echo --oversub
 all:
 	mpif90 -o scalapack-test scalapack-test.f -lscalapack -lopenblas
 
+mkl:
+	mpif90 -o scalapack-test scalapack-test.f -lscalapack -qmkl
+
 test:
 	mpirun -np 6 ${OVERSUBSCRIBE} ./scalapack-test
 
