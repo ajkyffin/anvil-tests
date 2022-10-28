@@ -49,24 +49,9 @@ node (params.os_label) {
             sh """
                 module load intel
 
-                \$CC --version | head -n1 | grep '^icc'
-                \$CXX --version | head -n1 | grep '^icpc'
-                \$FC --version | head -n1 | grep '^ifort'
-
-                cd hello-world
-                make clean
-                make
-                make test
-            """
-        }
-
-        catchError(stageResult: "FAILURE") {
-            sh """
-                module load intelx
-
                 \$CC --version | head -n1 | grep 'oneAPI DPC++/C++'
                 \$CXX --version | head -n1 | grep 'oneAPI DPC++/C++'
-                \$FC --version | head -n1 | grep '^ifx'
+                \$FC --version | head -n1 | grep '^ifort'
 
                 cd hello-world
                 make clean
@@ -81,34 +66,14 @@ node (params.os_label) {
             sh label: "intel", script: """
                 module load intel intelmpi
 
-                mpicc --version | head -n1 | grep '^icc'
-                mpicxx --version | head -n1 | grep '^icpc'
+                mpicc --version | head -n1 | grep 'oneAPI DPC++/C++'
+                mpicxx --version | head -n1 | grep 'oneAPI DPC++/C++'
                 mpifc --version | head -n1 | grep '^ifort'
                 mpif90 --version | head -n1 | grep '^ifort'
 
-                mpiicc --version | head -n1 | grep '^icc'
-                mpiicpc --version | head -n1 | grep '^icpc'
-                mpiifort --version | head -n1 | grep '^ifort'
-
-                cd mpi-hello-world
-                make clean
-                make
-                make test
-            """
-        }
-
-        catchError(stageResult: "FAILURE") {
-            sh label: "intelx", script: """
-                module load intelx intelmpi
-
-                mpicc --version | head -n1 | grep 'oneAPI DPC++/C++'
-                mpicxx --version | head -n1 | grep 'oneAPI DPC++/C++'
-                mpifc --version | head -n1 | grep '^ifx'
-                mpif90 --version | head -n1 | grep '^ifx'
-
                 mpiicc --version | head -n1 | grep 'oneAPI DPC++/C++'
-                mpiicxx --version | head -n1 | grep 'oneAPI DPC++/C++'
-                mpiifort --version | head -n1 | grep '^ifx'
+                mpiicpc --version | head -n1 | grep 'oneAPI DPC++/C++'
+                mpiifort --version | head -n1 | grep '^ifort'
 
                 cd mpi-hello-world
                 make clean
