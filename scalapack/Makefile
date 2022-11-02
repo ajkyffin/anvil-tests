@@ -4,7 +4,7 @@ all:
 	mpif90 -o scalapack-test scalapack-test.f -lscalapack -lopenblas
 
 mkl:
-	mpif90 -o scalapack-test scalapack-test.f -lscalapack -qmkl
+	mpif90 -o scalapack-test scalapack-test.f -qmkl=cluster
 
 test:
 	mpirun -np 6 ${OVERSUBSCRIBE} ./scalapack-test
