@@ -52,7 +52,7 @@ node (params.os_label) {
 
                 \$CC --version | head -n1 | grep 'oneAPI DPC++/C++'
                 \$CXX --version | head -n1 | grep 'oneAPI DPC++/C++'
-                \$FC --version | head -n1 | grep '^ifort'
+                \$FC --version | head -n1 | grep 'IFX'
 
                 cd hello-world
                 make clean
@@ -69,12 +69,12 @@ node (params.os_label) {
 
                 mpicc --version | head -n1 | grep 'oneAPI DPC++/C++'
                 mpicxx --version | head -n1 | grep 'oneAPI DPC++/C++'
-                mpifc --version | head -n1 | grep '^ifort'
-                mpif90 --version | head -n1 | grep '^ifort'
+                mpifc --version | head -n1 | grep 'IFX'
+                mpif90 --version | head -n1 | grep 'IFX'
 
                 mpiicc --version | head -n1 | grep 'oneAPI DPC++/C++'
                 mpiicpc --version | head -n1 | grep 'oneAPI DPC++/C++'
-                mpiifort --version | head -n1 | grep '^ifort'
+                mpiifort --version | head -n1 | grep 'IFX'
 
                 cd mpi-hello-world
                 make clean
